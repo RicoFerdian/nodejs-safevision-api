@@ -6,9 +6,12 @@ let urlencodedParser = bodyParser.urlencoded({
 })
 const router = express.Router()
 
-const userController = require("../controllers/user")
+const laporanController = require("../controllers/user")
 
-router.get("/getAllUsers",userController.getAllUsers)
-router.post("/registerAUser",urlencodedParser,userController.registerAUser)
+// router.get("/get",laporanController.getAll)
+// router.get("/getById/:id",laporanController.getById)
+// router.get("/getByUserId/:id",laporanController.getByUserId)
+// router.get("/getByUserName/:name",laporanController.getByUserName)
+// router.post("/create",urlencodedParser,laporanController.register)
 
 module.exports = router

@@ -9,7 +9,8 @@ const fieldSchema = mongoose.Schema({
     },
     ipcam:String,
     catatan:String,
-    bukti:String
+    bukti:String,
+    iduser:String
 })
 
 let laporan = mongoose.model("laporan",fieldSchema)
