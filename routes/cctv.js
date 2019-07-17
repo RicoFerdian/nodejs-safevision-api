@@ -12,6 +12,8 @@ router.get("/get",cctvController.getAll)
 router.get("/getById/:id",cctvController.getById)
 router.get("/getByUserId/:id",cctvController.getByUserId)
 router.get("/getByUserName/:name",cctvController.getByUserName)
+router.get("/getByPemilik",cctvController.getByPemilik)
+router.patch("/updateById/:id",urlencodedParser,cctvController.updateById)
 router.post("/create",urlencodedParser,cctvController.register)
 
 module.exports = router
