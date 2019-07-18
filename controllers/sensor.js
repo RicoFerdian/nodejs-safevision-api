@@ -32,7 +32,7 @@ exports.getSensorById = (req,res) =>{
 }
 
 exports.deleteSensorById = (req,res) =>{
-    sensor.deleteOne(req.params.id,(err,doc)=>{
+    sensor.findByIdAndDelete(req.params.id,(err,doc)=>{
         excecution(err,doc,res)
     })
 }

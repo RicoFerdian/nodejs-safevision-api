@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const fieldSchema = mongoose.Schema({
-    jenisSensor:{
+    jenissensor:{
         type:String
     },
     status:{

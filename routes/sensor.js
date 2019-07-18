@@ -8,12 +8,17 @@ const router = express.Router()
 
 const sensorController = require("../controllers/sensor")
 
-router.get("/getAllSensors",sensorController.getAllSensors)
-router.get("/getSensorById/:id",sensorController.getSensorById)
+// READ
+router.get("/getAll",sensorController.getAllSensors)
+router.get("/getById/:id",sensorController.getSensorById)
 
-router.patch("/updateSensorById/:id",urlencodedParser,sensorController.updateById)
-router.delete("/deleteSensorById/:id",sensorController.deleteSensorById)
+// UPDATE
+router.patch("/updateById/:id",urlencodedParser,sensorController.updateById)
 
-router.post("/registerSensor",urlencodedParser,sensorController.register)
+//  DELETE
+router.delete("/deleteById/:id",sensorController.deleteSensorById)
+
+// CREATE
+router.post("/create",urlencodedParser,sensorController.register)
 
 module.exports = router

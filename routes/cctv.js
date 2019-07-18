@@ -14,7 +14,7 @@ const cctvController = require("../controllers/cctv")
 router.post("/create",urlencodedParser,cctvController.register)
 
 // READ
-router.get("/get",cctvController.getAll)
+router.get("/getAll",cctvController.getAll)
 router.get("/getById/:id",cctvController.getById)
 router.get("/getByUserId/:id",cctvController.getByUserId)
 router.get("/getByUserName/:name",cctvController.getByUserName)
@@ -24,5 +24,6 @@ router.get("/getByPemilik/:pemilik",cctvController.getByPemilik)
 router.patch("/updateById/:id",urlencodedParser,cctvController.updateById)
 
 // DELETE
+router.patch("/deleteById/:id",urlencodedParser,cctvController.deleteById)
 
 module.exports = router
