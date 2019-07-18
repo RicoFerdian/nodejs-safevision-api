@@ -53,6 +53,12 @@ exports.updateById = (req,res) =>{
     })
 }
 
+exports.deleteById = (req,res) =>{
+    laporan.findByIdAndDelete(req.params.id,(err,doc)=>{
+        excecution(err,doc,res)
+    })
+}
+
 exports.register = (req,res) =>{
     laporan.create(req.body,(err,doc)=>{
         excecution(err,doc,res)

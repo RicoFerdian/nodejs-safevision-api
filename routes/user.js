@@ -13,6 +13,7 @@ router.get("/getByUserName/:name",userController.getByUserName)
 router.get("/getById/:id",userController.getById)
 router.patch("/updateById/:id",urlencodedParser,userController.updateById)
 router.patch("/updateByUserName/:name",urlencodedParser,userController.updateByUserName)
+router.delete("/deleteById/:id",userController.deleteById)
 router.post("/register",urlencodedParser,userController.registerAUser)
 
 module.exports = router

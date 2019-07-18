@@ -79,6 +79,18 @@ exports.getAllUsers = (req,res) =>{
     })
 }
 
+exports.deleteById = (req,res) =>{
+    user.findByIdAndDelete(req.params.id,(err,doc)=>{
+        if(err){
+            res.send({
+                message:err
+            })
+        }else{
+            res.send(doc)
+        }
+    })
+}
+
 exports.registerAUser = (req,res) =>{
     user.create(req.body,(err,doc)=>{
         if(err){
