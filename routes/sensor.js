@@ -6,9 +6,14 @@ let urlencodedParser = bodyParser.urlencoded({
 })
 const router = express.Router()
 
-const userController = require("../controllers/user")
+const sensorController = require("../controllers/sensor")
 
-router.get("/getAllUsers",userController.getAllUsers)
-router.post("/registerAUser",urlencodedParser,userController.registerAUser)
+router.get("/getAllSensors",sensorController.getAllSensors)
+router.get("/getSensorById/:id",sensorController.getSensorById)
+
+router.patch("/updateSensorById/:id",urlencodedParser,sensorController.updateById)
+router.delete("/deleteSensorById/:id",sensorController.deleteSensorById)
+
+router.post("/registerSensor",urlencodedParser,sensorController.register)
 
 module.exports = router

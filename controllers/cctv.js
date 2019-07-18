@@ -58,3 +58,9 @@ exports.register = (req,res) =>{
         excecution(err,doc,res)
     })
 }
+
+exports.deleteById = (req,res) =>{
+    cctv.deleteOne(req.params.id,(err,doc)=>{
+        excecution(err,doc,res)
+    })
+}

@@ -8,7 +8,7 @@ const router = express.Router()
 
 const userController = require("../controllers/user")
 
-router.get("/get",userController.getAllUsers)
+router.get("/getAllUsers",userController.getAllUsers)
 router.get("/getByUserName/:name",userController.getByUserName)
 router.get("/getById/:id",userController.getById)
 router.patch("/updateById/:id",urlencodedParser,userController.updateById)
