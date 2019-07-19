@@ -3,7 +3,8 @@ const app = express()
 const mongoose = require("mongoose")
 
 mongoose.connect("mongodb://localhost/trafficnet-security",{useCreateIndex: true,useNewUrlParser:true})
-
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 // router
 const userRouter = require("./routes/user")
 const cctvRouter = require("./routes/cctv")

@@ -31,6 +31,21 @@ exports.getSensorById = (req,res) =>{
     })
 }
 
+exports.setSensorById = (req,res) =>{
+    sensor.findByIdAndUpdate(req.params.id,{status:req.params.status},{
+        new:true},
+    (err,doc)=>{
+        if(err){
+            res.send({
+                message:err
+            })
+        }else{
+            res.redirect("/sensor/getById/"+req.params.id)
+        }
+    })
+
+}
+
 exports.deleteSensorById = (req,res) =>{
     sensor.findByIdAndDelete(req.params.id,(err,doc)=>{
         excecution(err,doc,res)

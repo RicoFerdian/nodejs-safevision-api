@@ -14,6 +14,7 @@ router.get("/getById/:id",sensorController.getSensorById)
 
 // UPDATE
 router.patch("/updateById/:id",urlencodedParser,sensorController.updateById)
+router.get("/setById/:id/:status",sensorController.setSensorById)
 
 //  DELETE
 router.delete("/deleteById/:id",sensorController.deleteSensorById)
