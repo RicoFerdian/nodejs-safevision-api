@@ -11,6 +11,12 @@ const fieldSchema = mongoose.Schema({
     },
     username:{
         type:String
+    },
+    long:{
+        type:String
+    },
+    lat:{
+        type:String
     }
 
 })

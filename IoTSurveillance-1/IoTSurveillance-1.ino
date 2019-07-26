@@ -90,7 +90,8 @@ void loop() {
  
     HTTPClient http;
  
-    http.begin("http://172.20.10.9:3000/sensor/getById/5d30640321d4ccb2f1556132"); //Specify the URL
+//    http.begin("http://172.20.10.9:3000/sensor/getById/5d30640321d4ccb2f1556132"); //Specify the URL
+    http.begin("https://trafficnet.id/sensor/getById/5d3158dfe57bce652711d4cc"); //Specify the URL
     int httpCode = http.GET();                                        //Make the request
  
     if (httpCode > 0) { //Check for the returning code
@@ -114,11 +115,11 @@ void loop() {
 
         if(sensor == 0){
           Serial.println("Sensor Aman");
-          http.begin("http://172.20.10.9:3000/sensor/getById/5d30640321d4ccb2f1556132/0");
+          http.begin("https://trafficnet.id/sensor/setById/5d3158dfe57bce652711d4c/0");
           http.GET();
         }else{
           Serial.println("Indikasi");
-          http.begin("http://172.20.10.9:3000/sensor/getById/5d30640321d4ccb2f1556132/1");
+          http.begin("https://trafficnet.id/sensor/setById/5d3158dfe57bce652711d4c/1");
           http.GET();
         }
         

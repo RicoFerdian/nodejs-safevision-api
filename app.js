@@ -1,10 +1,12 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+const cors = require("cors")
 
 mongoose.connect("mongodb://localhost/trafficnet-security",{useCreateIndex: true,useNewUrlParser:true})
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
+app.use(cors());
 // router
 const userRouter = require("./routes/user")
 const cctvRouter = require("./routes/cctv")
