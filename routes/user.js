@@ -15,5 +15,6 @@ router.patch("/updateById/:id",urlencodedParser,userController.updateById)
 router.patch("/updateByUserName/:name",urlencodedParser,userController.updateByUserName)
 router.delete("/deleteById/:id",userController.deleteById)
 router.post("/create",urlencodedParser,userController.registerAUser)
+router.post("/login",urlencodedParser,userController.loginUser)
 
 module.exports = router

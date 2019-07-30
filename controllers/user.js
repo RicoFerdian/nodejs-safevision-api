@@ -105,3 +105,25 @@ exports.registerAUser = (req, res) => {
         }
     })
 }
+
+exports.loginUser = (req,res) =>{
+    user.findOne({
+        email: req.body.email,
+        password: req.body.password
+    }, function (err, data) {
+        if (err) {
+            console.log("Something went wrong")
+        } else {
+            if(data==null){
+                res.send({
+                    message:"User not found"
+                })
+            }else{
+                res.send({
+                    message:"Success",
+                    data:data
+                })
+            }
+        }
+    })
+}
