@@ -1,5 +1,5 @@
-const express = require("express")
-const bodyParser = require("body-parser")
+const express = require('express')
+const bodyParser = require('body-parser')
 
 // create
 // getAll
@@ -8,26 +8,26 @@ const bodyParser = require("body-parser")
 // deleteById/:id
 
 let urlencodedParser = bodyParser.urlencoded({
-    extended: false
+	extended: false
 })
 const router = express.Router()
 
-const laporanController = require("../controllers/laporan")
+const laporanController = require('../controllers/laporan')
 
 // READ
-router.get("/getAll",laporanController.getAll)
-router.get("/getById/:id",laporanController.getById) 
-router.get("/getByUserId/:id",laporanController.getByUserId) 
-router.get("/getByUserName/:name",laporanController.getByUserName)
-router.get("/getByPemilik",laporanController.getByPemilik)
+router.get('/getAll', laporanController.getAll)
+router.get('/getById/:id', laporanController.getById)
+router.get('/getByUserId/:id', laporanController.getByUserId)
+router.get('/getByUserName/:name', laporanController.getByUserName)
+router.get('/getByPemilik', laporanController.getByPemilik)
 
 // UPDATE
-router.patch("/updateById/:id",urlencodedParser,laporanController.updateById)
+router.patch('/updateById/:id', urlencodedParser, laporanController.updateById)
 
 // CREATE
-router.post("/create",urlencodedParser,laporanController.register)
+router.post('/create', urlencodedParser, laporanController.register)
 
 // DELETE
-router.delete("/delete/:id",laporanController.deleteById)
+router.delete('/deleteById/:id', laporanController.deleteById)
 
 module.exports = router

@@ -6,7 +6,8 @@ const fieldSchema = mongoose.Schema({
     },
     status:{
         type:String
-    },data:{
+    },
+    data:{
         type:Array
     },
     username:{

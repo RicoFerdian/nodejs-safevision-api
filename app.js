@@ -37,6 +37,6 @@ app.use("/laporan", laporanRouter)
 app.use("/cctv", cctvRouter)
 app.use("/sensor", sensorRouter)
 
-app.listen(3000, () => {
+app.listen(3010, () => {
     console.log("Server is running!")
 })
