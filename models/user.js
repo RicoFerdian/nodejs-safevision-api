@@ -9,7 +9,11 @@ const fieldSchema = mongoose.Schema({
 		type: String,
 		unique: true
 	},
-	password: String
+	password: String,
+	subscription: {
+		type: String,
+		default: 'basic'
+	}
 })
 
 let user = mongoose.model('user', fieldSchema)
