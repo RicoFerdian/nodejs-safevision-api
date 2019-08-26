@@ -1,25 +1,32 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-
-let urlencodedParser = bodyParser.urlencoded({
-    extended: false
-})
+const express = require('express')
+const verifyAuthorization = require('../middleware/verifyAuthorization')
 const router = express.Router()
-
-const sensorController = require("../controllers/sensor")
+const sensorController = require('../controllers/sensor')
 
 // READ
-router.get("/getAll",sensorController.getAllSensors)
-router.get("/getById/:id",sensorController.getSensorById)
+router.get('/getAll', verifyAuthorization, sensorController.getAllSensors)
+router.get('/getById/:id', verifyAuthorization, sensorController.getSensorById)
 
 // UPDATE
-router.patch("/updateById/:id",urlencodedParser,sensorController.updateById)
-router.get("/setById/:id/:status",sensorController.setSensorById)
+router.patch(
+	'/updateById/:id',
+	verifyAuthorization,
+	sensorController.updateById
+)
+router.get(
+	'/setById/:id/:status',
+	verifyAuthorization,
+	sensorController.setSensorById
+)
 
 //  DELETE
-router.delete("/deleteById/:id",sensorController.deleteSensorById)
+router.delete(
+	'/deleteById/:id',
+	verifyAuthorization,
+	sensorController.deleteSensorById
+)
 
 // CREATE
-router.post("/create",urlencodedParser,sensorController.register)
+router.post('/create', verifyAuthorization, sensorController.register)
 
 module.exports = router

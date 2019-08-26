@@ -1,33 +1,45 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-
+const verifyAuthorization = require('../middleware/verifyAuthorization')
 // create
 // getAll
 // getById/:id
 // updateById/:id
 // deleteById/:id
 
-let urlencodedParser = bodyParser.urlencoded({
-	extended: false
-})
 const router = express.Router()
 
 const laporanController = require('../controllers/laporan')
 
 // READ
-router.get('/getAll', laporanController.getAll)
-router.get('/getById/:id', laporanController.getById)
-router.get('/getByUserId/:id', laporanController.getByUserId)
-router.get('/getByUserName/:name', laporanController.getByUserName)
-router.get('/getByPemilik', laporanController.getByPemilik)
+router.get('/getAll', verifyAuthorization, laporanController.getAll)
+router.get('/getById/:id', verifyAuthorization, laporanController.getById)
+router.get(
+	'/getByUserId/:id',
+	verifyAuthorization,
+	laporanController.getByUserId
+)
+router.get(
+	'/getByUserName/:name',
+	verifyAuthorization,
+	laporanController.getByUserName
+)
+router.get('/getByPemilik', verifyAuthorization, laporanController.getByPemilik)
 
 // UPDATE
-router.patch('/updateById/:id', urlencodedParser, laporanController.updateById)
+router.patch(
+	'/updateById/:id',
+	verifyAuthorization,
+	laporanController.updateById
+)
 
 // CREATE
-router.post('/create', urlencodedParser, laporanController.register)
+router.post('/create', verifyAuthorization, laporanController.register)
 
 // DELETE
-router.delete('/deleteById/:id', laporanController.deleteById)
+router.delete(
+	'/deleteById/:id',
+	verifyAuthorization,
+	laporanController.deleteById
+)
 
 module.exports = router

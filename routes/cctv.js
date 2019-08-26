@@ -1,29 +1,32 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-
-let urlencodedParser = bodyParser.urlencoded({
-	extended: false
-})
 const router = express.Router()
-
 const cctvController = require('../controllers/cctv')
+const verifyAuthorization = require('../middleware/verifyAuthorization')
 
 // CRUD
 
 // CREATE
-router.post('/create', urlencodedParser, cctvController.register)
+router.post('/create', verifyAuthorization, cctvController.register)
 
 // READ
-router.get('/getAll', cctvController.getAll)
-router.get('/getById/:id', cctvController.getById)
-router.get('/getByUserId/:id', cctvController.getByUserId)
-router.get('/getByUserName/:name', cctvController.getByUserName)
-router.get('/getByPemilik/:pemilik', cctvController.getByPemilik)
+router.get('/getAll', verifyAuthorization, cctvController.getAll)
+router.get('/getById/:id', verifyAuthorization, cctvController.getById)
+router.get('/getByUserId/:id', verifyAuthorization, cctvController.getByUserId)
+router.get(
+	'/getByUserName/:name',
+	verifyAuthorization,
+	cctvController.getByUserName
+)
+router.get(
+	'/getByPemilik/:pemilik',
+	verifyAuthorization,
+	cctvController.getByPemilik
+)
 
 // UPDATE
-router.patch('/updateById/:id', urlencodedParser, cctvController.updateById)
+router.patch('/updateById/:id', verifyAuthorization, cctvController.updateById)
 
 // DELETE
-router.delete('/deleteById/:id', urlencodedParser, cctvController.deleteById)
+router.delete('/deleteById/:id', verifyAuthorization, cctvController.deleteById)
 
 module.exports = router

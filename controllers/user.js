@@ -1,4 +1,8 @@
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
 let user = require('../models/user')
+const config = require('../config')
 
 // router.get("/get",userController.getAllUsers) *
 // router.get("/getByUserName",userController.getByUserName) *
@@ -63,6 +67,42 @@ exports.getById = (req, res) => {
     })
 }
 
+exports.getLoggedIn = (req, res) => {
+    user.findById(req.userId, (err, doc) => {
+        if (err) {
+            res.send({
+                error: err
+            })
+        } else {
+            const { _id, username, email, subscription } = doc
+            res.send({
+                message: 'Success',
+                data: {
+                    _id,
+                    username,
+                    email,
+                    subscription
+                }
+            })
+        }
+    })
+}
+
+exports.updateLoggedIn = (req, res) => {
+    user.findByIdAndUpdate(req.userId, req.body, { new: true }, (err, doc) => {
+        if (err) {
+            res.send({
+                error: err
+            })
+        } else {
+            res.send({
+                message: 'Success',
+                data: doc
+            })
+        }
+    })
+}
+
 exports.updateByUserName = (req, res) => {
     user.findOneAndUpdate(
         req.params.name,
@@ -108,41 +148,54 @@ exports.deleteById = (req, res) => {
 }
 
 exports.registerAUser = (req, res) => {
-    user.create(req.body, (err, doc) => {
-        if (err) {
-            res.send({
-                message: err
-            })
-        } else {
-            res.send({
-                data: doc,
-                message: 'success'
-            })
+    const { email, username, password } = req.body
+    const hashedPassword = bcrypt.hashSync(password, 8)
+
+    user.create(
+        {
+            username,
+            email,
+            password: hashedPassword
+        },
+        (err, doc) => {
+            if (err) {
+                res.status(500).send({
+                    message: err
+                })
+            } else {
+                res.status(200).send({
+                    message: 'success'
+                })
+            }
         }
-    })
+    )
 }
 
 exports.loginUser = (req, res) => {
     user.findOne(
         {
-            email: req.body.email,
-            password: req.body.password
+            email: req.body.email
         },
-        function(err, data) {
-            if (err) {
-                console.log('Something went wrong')
-            } else {
-                if (data == null) {
-                    res.send({
-                        message: 'User not found'
-                    })
-                } else {
-                    res.send({
-                        message: 'Success',
-                        data: data
-                    })
-                }
-            }
+        function(err, userData) {
+            if (err) return res.status(500).send('Internal server error.')
+            if (!userData) return res.status(404).send('User not found.')
+
+            const passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                userData.password
+            )
+
+            if (!passwordIsValid)
+                return res.status(401).send('Invalid credentials.')
+
+            const token = jwt.sign({ id: userData._id }, config.secret, {
+                expiresIn: 86400
+            })
+
+            res.status(200).send({
+                message: 'Success',
+                token
+            })
         }
     )
 }
