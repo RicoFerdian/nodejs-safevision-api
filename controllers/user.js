@@ -1,4 +1,4 @@
-let user = require("../models/user")
+let user = require('../models/user')
 
 // router.get("/get",userController.getAllUsers) *
 // router.get("/getByUserName",userController.getByUserName) *
@@ -15,7 +15,7 @@ exports.getByUserName = (req, res) => {
             })
         } else {
             res.send({
-                message: "Success",
+                message: 'Success',
                 data: doc
             })
         }
@@ -23,18 +23,23 @@ exports.getByUserName = (req, res) => {
 }
 
 exports.updateById = (req, res) => {
-    user.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, doc) => {
-        if (err) {
-            res.send({
-                error: err
-            })
-        } else {
-            res.send({
-                message: "Success",
-                data: doc
-            })
+    user.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                res.send({
+                    message: 'Success',
+                    data: doc
+                })
+            }
         }
-    })
+    )
 }
 
 exports.getById = (req, res) => {
@@ -44,27 +49,38 @@ exports.getById = (req, res) => {
                 error: err
             })
         } else {
+            const { _id, username, email, subscription } = doc
             res.send({
-                message: "Success",
-                data: doc
+                message: 'Success',
+                data: {
+                    _id,
+                    username,
+                    email,
+                    subscription
+                }
             })
         }
     })
 }
 
 exports.updateByUserName = (req, res) => {
-    user.findOneAndUpdate(req.params.name, req.body, { new: true }, (err, doc) => {
-        if (err) {
-            res.send({
-                error: err
-            })
-        } else {
-            res.send({
-                message: "Success",
-                data: doc
-            })
+    user.findOneAndUpdate(
+        req.params.name,
+        req.body,
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                res.send({
+                    message: 'Success',
+                    data: doc
+                })
+            }
         }
-    })
+    )
 }
 
 exports.getAllUsers = (req, res) => {
@@ -100,30 +116,33 @@ exports.registerAUser = (req, res) => {
         } else {
             res.send({
                 data: doc,
-                message: "success"
+                message: 'success'
             })
         }
     })
 }
 
-exports.loginUser = (req,res) =>{
-    user.findOne({
-        email: req.body.email,
-        password: req.body.password
-    }, function (err, data) {
-        if (err) {
-            console.log("Something went wrong")
-        } else {
-            if(data==null){
-                res.send({
-                    message:"User not found"
-                })
-            }else{
-                res.send({
-                    message:"Success",
-                    data:data
-                })
+exports.loginUser = (req, res) => {
+    user.findOne(
+        {
+            email: req.body.email,
+            password: req.body.password
+        },
+        function(err, data) {
+            if (err) {
+                console.log('Something went wrong')
+            } else {
+                if (data == null) {
+                    res.send({
+                        message: 'User not found'
+                    })
+                } else {
+                    res.send({
+                        message: 'Success',
+                        data: data
+                    })
+                }
             }
         }
-    })
+    )
 }
