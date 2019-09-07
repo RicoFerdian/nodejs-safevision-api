@@ -124,7 +124,7 @@ exports.updateByUserName = (req, res) => {
 }
 
 exports.getAllUsers = (req, res) => {
-    user.find((err, doc) => {
+    user.find({ role: 'resident' }, (err, doc) => {
         if (err) {
             res.send({
                 message: err
@@ -147,15 +147,16 @@ exports.deleteById = (req, res) => {
     })
 }
 
-exports.registerAUser = (req, res) => {
-    const { email, username, password } = req.body
-    const hashedPassword = bcrypt.hashSync(password, 8)
+exports.addResident = async (req, res) => {
+    const { email } = req.body
+    const hashedPassword = bcrypt.hashSync(email, 8)
 
     user.create(
         {
-            username,
+            username: email,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: 'resident'
         },
         (err, doc) => {
             if (err) {
@@ -171,8 +172,37 @@ exports.registerAUser = (req, res) => {
     )
 }
 
-exports.loginUser = (req, res) => {
-    user.findOne(
+exports.registerAUser = (req, res) => {
+    const { email, username, password } = req.body
+    const hashedPassword = bcrypt.hashSync(password, 8)
+
+    user.create(
+        {
+            username,
+            email,
+            password: hashedPassword,
+            role: 'security'
+        },
+        (err, doc) => {
+            if (err) {
+                res.status(500).send({
+                    message: err
+                })
+            } else {
+                res.status(200).send({
+                    message: 'success'
+                })
+            }
+        }
+    )
+}
+
+exports.loginResident = (req, res) => generateLogin('resident', req, res)
+
+exports.loginSecurity = (req, res) => generateLogin('security', req, res)
+
+function generateLogin(role, req, res) {
+    return user.findOne(
         {
             email: req.body.email
         },
@@ -185,12 +215,16 @@ exports.loginUser = (req, res) => {
                 userData.password
             )
 
-            if (!passwordIsValid)
+            if (!passwordIsValid || userData.role !== role)
                 return res.status(401).send('Invalid credentials.')
 
-            const token = jwt.sign({ id: userData._id }, config.secret, {
-                expiresIn: 86400
-            })
+            const token = jwt.sign(
+                { id: userData._id, role: userData.role },
+                config.secret,
+                {
+                    expiresIn: 86400
+                }
+            )
 
             res.status(200).send({
                 message: 'Success',

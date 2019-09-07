@@ -15,6 +15,7 @@ function verifyAuthorization(req, res, next) {
 				.send({ auth: false, message: 'Failed to authenticate token.' })
 
 		req.userId = decoded.id
+		req.userRole = decoded.role
 		next()
 	})
 }

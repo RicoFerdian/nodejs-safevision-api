@@ -1,27 +1,26 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const fieldSchema = mongoose.Schema({
-    jenissensor:{
-        type:String
+    jenis: {
+        type: String
     },
-    status:{
-        type:String
+    status: {
+        type: String
     },
-    data:{
-        type:Array
+    data: {
+        type: Array
     },
-    username:{
-        type:String
+    username: {
+        type: String
     },
-    long:{
-        type:String
+    long: {
+        type: String
     },
-    lat:{
-        type:String
+    lat: {
+        type: String
     }
-
 })
 
-let sensor = mongoose.model("sensor",fieldSchema)
+let sensor = mongoose.model('sensor', fieldSchema)
 
 module.exports = sensor

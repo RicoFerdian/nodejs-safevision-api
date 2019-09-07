@@ -1,11 +1,16 @@
 const express = require('express')
 const verifyAuthorization = require('../middleware/verifyAuthorization')
+const verifySecurity = require('../middleware/verifySecurity')
 
 const router = express.Router()
 const userController = require('../controllers/user')
 
-router.get('/getAll', verifyAuthorization, userController.getAllUsers)
-router.get('/getByUserName/:name', userController.getByUserName)
+// Accessible by unlogged in user
+router.post('/create', userController.registerAUser)
+router.post('/login/security', userController.loginSecurity)
+router.post('/login/resident', userController.loginResident)
+
+// Accessible by logged in user
 router.get('/getById/:id', verifyAuthorization, userController.getById)
 router.get('/getLoggedIn', verifyAuthorization, userController.getLoggedIn)
 router.patch(
@@ -14,9 +19,32 @@ router.patch(
 	userController.updateLoggedIn
 )
 router.patch('/updateById/:id', verifyAuthorization, userController.updateById)
-router.patch('/updateByUserName/:name', userController.updateByUserName)
-router.delete('/deleteById/:id', verifyAuthorization, userController.deleteById)
-router.post('/create', userController.registerAUser)
-router.post('/login', userController.loginUser)
+router.patch(
+	'/updateByUserName/:name',
+	verifyAuthorization,
+	userController.updateByUserName
+)
+
+// Only accessible by security
+router.get(
+	'/getAll',
+	verifyAuthorization,
+	verifySecurity,
+	userController.getAllUsers
+)
+
+router.delete(
+	'/deleteById/:id',
+	verifyAuthorization,
+	verifySecurity,
+	userController.deleteById
+)
+
+router.post(
+	'/addresident',
+	verifyAuthorization,
+	verifySecurity,
+	userController.addResident
+)
 
 module.exports = router

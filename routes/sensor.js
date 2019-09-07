@@ -1,21 +1,30 @@
 const express = require('express')
 const verifyAuthorization = require('../middleware/verifyAuthorization')
+const verifySecurity = require('../middleware/verifySecurity')
+const verifyResident = require('../middleware/verifyResident')
 const router = express.Router()
 const sensorController = require('../controllers/sensor')
 
-// READ
-router.get('/getAll', verifyAuthorization, sensorController.getAllSensors)
-router.get('/getById/:id', verifyAuthorization, sensorController.getSensorById)
+// Only accessible by resident
+router.get(
+	'/getById/:id',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.getSensorById
+)
 
 // UPDATE
 router.patch(
 	'/updateById/:id',
 	verifyAuthorization,
+	verifyResident,
 	sensorController.updateById
 )
-router.get(
+
+router.post(
 	'/setById/:id/:status',
 	verifyAuthorization,
+	verifyResident,
 	sensorController.setSensorById
 )
 
@@ -23,10 +32,25 @@ router.get(
 router.delete(
 	'/deleteById/:id',
 	verifyAuthorization,
+	verifyResident,
 	sensorController.deleteSensorById
 )
 
 // CREATE
-router.post('/create', verifyAuthorization, sensorController.register)
+router.post(
+	'/create',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.register
+)
+
+// Only accessible by security
+// READ
+router.get(
+	'/getAll',
+	verifyAuthorization,
+	verifySecurity,
+	sensorController.getAllSensors
+)
 
 module.exports = router

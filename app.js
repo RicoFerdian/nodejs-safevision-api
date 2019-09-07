@@ -9,6 +9,7 @@ mongoose.connect('mongodb://localhost/trafficnet-security', {
 	useCreateIndex: true,
 	useNewUrlParser: true
 })
+mongoose.connection.once('open', () => console.log('DB connected'))
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 app.use(cors())
