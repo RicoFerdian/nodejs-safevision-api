@@ -1,4 +1,6 @@
-const express = require('express')
+const app = require('express')()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 const mongoose = require('mongoose')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -40,6 +42,14 @@ app.use('/user', userRouter)
 app.use('/laporan', laporanRouter)
 app.use('/cctv', cctvRouter)
 app.use('/sensor', sensorRouter)
+
+io.on('connection', function(socket) {
+	socket.on('iot_command', function(msg) {
+		console.log(msg)
+		io.emit('command', msg)
+	})
+	// socket.emit('chat message', 'yoolooo')
+})
 
 app.listen(3010, () => {
 	console.log('Server is running!')
