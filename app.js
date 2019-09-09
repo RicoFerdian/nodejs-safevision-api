@@ -36,7 +36,8 @@ app.use("/user", userRouter)
 app.use("/laporan", laporanRouter)
 app.use("/cctv", cctvRouter)
 app.use("/sensor", sensorRouter)
+app.get("/test", () => "hello")
 
-app.listen(3010, () => {
+app.listen(6500, () => {
     console.log("Server is running!")
 })
