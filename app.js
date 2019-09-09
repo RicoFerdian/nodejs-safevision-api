@@ -38,10 +38,11 @@ app.use(express.static(__dirname + '/public'))
 //     next()
 // })
 
-app.use('/user', userRouter)
-app.use('/laporan', laporanRouter)
-app.use('/cctv', cctvRouter)
-app.use('/sensor', sensorRouter)
+app.use("/user", userRouter)
+app.use("/laporan", laporanRouter)
+app.use("/cctv", cctvRouter)
+app.use("/sensor", sensorRouter)
+app.get("/test", () => "hello")
 
 io.on('connection', function(socket) {
 	socket.on('iot_command', function(msg) {
@@ -51,6 +52,6 @@ io.on('connection', function(socket) {
 	// socket.emit('chat message', 'yoolooo')
 })
 
-app.listen(3010, () => {
-	console.log('Server is running!')
+app.listen(6500, () => {
+    console.log("Server is running!")
 })
