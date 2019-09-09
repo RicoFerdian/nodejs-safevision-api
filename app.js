@@ -50,6 +50,6 @@ io.on('connection', function(socket) {
 	// socket.emit('chat message', 'yoolooo')
 })
 
-app.listen(6500, () => {
+http.listen(6500, () => {
     console.log("Server is running!")
 })
