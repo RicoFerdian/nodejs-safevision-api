@@ -5,8 +5,6 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-const app = express()
-
 mongoose.connect('mongodb://localhost/trafficnet-security', {
 	useCreateIndex: true,
 	useNewUrlParser: true
