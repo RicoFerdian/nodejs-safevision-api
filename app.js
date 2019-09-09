@@ -43,13 +43,13 @@ app.use("/cctv", cctvRouter)
 app.use("/sensor", sensorRouter)
 app.get("/test", () => "hello")
 
-io.on('connection', function(socket) {
-	socket.on('iot_command', function(msg) {
-		console.log(msg)
-		io.emit('command', msg)
+io.of('/websocket')
+	.on('connection', function(socket) {
+		socket.on('iot_push', function(msg) {
+			console.log(msg)
+			socket.emit('api_push', 'API PUSH : '+msg)
+		})
 	})
-	// socket.emit('chat message', 'yoolooo')
-})
 
 http.listen(6500, () => {
     console.log("Server is running!")
