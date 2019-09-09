@@ -1,25 +1,56 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-
-let urlencodedParser = bodyParser.urlencoded({
-    extended: false
-})
+const express = require('express')
+const verifyAuthorization = require('../middleware/verifyAuthorization')
+const verifySecurity = require('../middleware/verifySecurity')
+const verifyResident = require('../middleware/verifyResident')
 const router = express.Router()
+const sensorController = require('../controllers/sensor')
 
-const sensorController = require("../controllers/sensor")
-
-// READ
-router.get("/getAll",sensorController.getAllSensors)
-router.get("/getById/:id",sensorController.getSensorById)
+// Only accessible by resident
+router.get(
+	'/getById/:id',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.getSensorById
+)
 
 // UPDATE
-router.patch("/updateById/:id",urlencodedParser,sensorController.updateById)
-router.get("/setById/:id/:status",sensorController.setSensorById)
+router.patch(
+	'/updateById/:id',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.updateById
+)
+
+router.post(
+	'/setById/:id/:status',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.setSensorById
+)
 
 //  DELETE
-router.delete("/deleteById/:id",sensorController.deleteSensorById)
+router.delete(
+	'/deleteById/:id',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.deleteSensorById
+)
 
 // CREATE
-router.post("/create",urlencodedParser,sensorController.register)
+router.post(
+	'/create',
+	verifyAuthorization,
+	verifyResident,
+	sensorController.register
+)
+
+// Only accessible by security
+// READ
+router.get(
+	'/getAll',
+	verifyAuthorization,
+	verifySecurity,
+	sensorController.getAllSensors
+)
 
 module.exports = router

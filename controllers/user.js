@@ -1,4 +1,8 @@
-let user = require("../models/user")
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
+let user = require('../models/user')
+const config = require('../config')
 
 // router.get("/get",userController.getAllUsers) *
 // router.get("/getByUserName",userController.getByUserName) *
@@ -15,7 +19,7 @@ exports.getByUserName = (req, res) => {
             })
         } else {
             res.send({
-                message: "Success",
+                message: 'Success',
                 data: doc
             })
         }
@@ -23,18 +27,23 @@ exports.getByUserName = (req, res) => {
 }
 
 exports.updateById = (req, res) => {
-    user.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, doc) => {
-        if (err) {
-            res.send({
-                error: err
-            })
-        } else {
-            res.send({
-                message: "Success",
-                data: doc
-            })
+    user.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                res.send({
+                    message: 'Success',
+                    data: doc
+                })
+            }
         }
-    })
+    )
 }
 
 exports.getById = (req, res) => {
@@ -44,8 +53,50 @@ exports.getById = (req, res) => {
                 error: err
             })
         } else {
+            const { _id, username, email, subscription } = doc
             res.send({
-                message: "Success",
+                message: 'Success',
+                data: {
+                    _id,
+                    username,
+                    email,
+                    subscription
+                }
+            })
+        }
+    })
+}
+
+exports.getLoggedIn = (req, res) => {
+    user.findById(req.userId, (err, doc) => {
+        if (err) {
+            res.send({
+                error: err
+            })
+        } else {
+            const { _id, username, email, subscription } = doc
+            res.send({
+                message: 'Success',
+                data: {
+                    _id,
+                    username,
+                    email,
+                    subscription
+                }
+            })
+        }
+    })
+}
+
+exports.updateLoggedIn = (req, res) => {
+    user.findByIdAndUpdate(req.userId, req.body, { new: true }, (err, doc) => {
+        if (err) {
+            res.send({
+                error: err
+            })
+        } else {
+            res.send({
+                message: 'Success',
                 data: doc
             })
         }
@@ -53,22 +104,27 @@ exports.getById = (req, res) => {
 }
 
 exports.updateByUserName = (req, res) => {
-    user.findOneAndUpdate(req.params.name, req.body, { new: true }, (err, doc) => {
-        if (err) {
-            res.send({
-                error: err
-            })
-        } else {
-            res.send({
-                message: "Success",
-                data: doc
-            })
+    user.findOneAndUpdate(
+        req.params.name,
+        req.body,
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                res.send({
+                    message: 'Success',
+                    data: doc
+                })
+            }
         }
-    })
+    )
 }
 
 exports.getAllUsers = (req, res) => {
-    user.find((err, doc) => {
+    user.find({ role: 'resident' }, (err, doc) => {
         if (err) {
             res.send({
                 message: err
@@ -91,39 +147,89 @@ exports.deleteById = (req, res) => {
     })
 }
 
-exports.registerAUser = (req, res) => {
-    user.create(req.body, (err, doc) => {
-        if (err) {
-            res.send({
-                message: err
-            })
-        } else {
-            res.send({
-                data: doc,
-                message: "success"
-            })
-        }
-    })
-}
+exports.addResident = async (req, res) => {
+    const { email } = req.body
+    const hashedPassword = bcrypt.hashSync(email, 8)
 
-exports.loginUser = (req,res) =>{
-    user.findOne({
-        email: req.body.email,
-        password: req.body.password
-    }, function (err, data) {
-        if (err) {
-            console.log("Something went wrong")
-        } else {
-            if(data==null){
-                res.send({
-                    message:"User not found"
+    user.create(
+        {
+            username: email,
+            email,
+            password: hashedPassword,
+            role: 'resident'
+        },
+        (err, doc) => {
+            if (err) {
+                res.status(500).send({
+                    message: err
                 })
-            }else{
-                res.send({
-                    message:"Success",
-                    data:data
+            } else {
+                res.status(200).send({
+                    message: 'success'
                 })
             }
         }
-    })
+    )
+}
+
+exports.registerAUser = (req, res) => {
+    const { email, username, password } = req.body
+    const hashedPassword = bcrypt.hashSync(password, 8)
+
+    user.create(
+        {
+            username,
+            email,
+            password: hashedPassword,
+            role: 'security'
+        },
+        (err, doc) => {
+            if (err) {
+                res.status(500).send({
+                    message: err
+                })
+            } else {
+                res.status(200).send({
+                    message: 'success'
+                })
+            }
+        }
+    )
+}
+
+exports.loginResident = (req, res) => generateLogin('resident', req, res)
+
+exports.loginSecurity = (req, res) => generateLogin('security', req, res)
+
+function generateLogin(role, req, res) {
+    return user.findOne(
+        {
+            email: req.body.email
+        },
+        function(err, userData) {
+            if (err) return res.status(500).send('Internal server error.')
+            if (!userData) return res.status(404).send('User not found.')
+
+            const passwordIsValid = bcrypt.compareSync(
+                req.body.password,
+                userData.password
+            )
+
+            if (!passwordIsValid || userData.role !== role)
+                return res.status(401).send('Invalid credentials.')
+
+            const token = jwt.sign(
+                { id: userData._id, role: userData.role },
+                config.secret,
+                {
+                    expiresIn: 86400
+                }
+            )
+
+            res.status(200).send({
+                message: 'Success',
+                token
+            })
+        }
+    )
 }

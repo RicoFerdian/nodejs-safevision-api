@@ -1,20 +1,50 @@
-const express = require("express")
-const bodyParser = require("body-parser")
+const express = require('express')
+const verifyAuthorization = require('../middleware/verifyAuthorization')
+const verifySecurity = require('../middleware/verifySecurity')
 
-let urlencodedParser = bodyParser.urlencoded({
-    extended: false
-})
 const router = express.Router()
+const userController = require('../controllers/user')
 
-const userController = require("../controllers/user")
+// Accessible by unlogged in user
+router.post('/create', userController.registerAUser)
+router.post('/login/security', userController.loginSecurity)
+router.post('/login/resident', userController.loginResident)
 
-router.get("/getAll",userController.getAllUsers)
-router.get("/getByUserName/:name",userController.getByUserName)
-router.get("/getById/:id",userController.getById)
-router.patch("/updateById/:id",urlencodedParser,userController.updateById)
-router.patch("/updateByUserName/:name",urlencodedParser,userController.updateByUserName)
-router.delete("/deleteById/:id",userController.deleteById)
-router.post("/create",urlencodedParser,userController.registerAUser)
-router.post("/login",urlencodedParser,userController.loginUser)
+// Accessible by logged in user
+router.get('/getById/:id', verifyAuthorization, userController.getById)
+router.get('/getLoggedIn', verifyAuthorization, userController.getLoggedIn)
+router.patch(
+	'/updateLoggedIn',
+	verifyAuthorization,
+	userController.updateLoggedIn
+)
+router.patch('/updateById/:id', verifyAuthorization, userController.updateById)
+router.patch(
+	'/updateByUserName/:name',
+	verifyAuthorization,
+	userController.updateByUserName
+)
+
+// Only accessible by security
+router.get(
+	'/getAll',
+	verifyAuthorization,
+	verifySecurity,
+	userController.getAllUsers
+)
+
+router.delete(
+	'/deleteById/:id',
+	verifyAuthorization,
+	verifySecurity,
+	userController.deleteById
+)
+
+router.post(
+	'/addresident',
+	verifyAuthorization,
+	verifySecurity,
+	userController.addResident
+)
 
 module.exports = router
