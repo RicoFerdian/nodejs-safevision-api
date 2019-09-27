@@ -27,6 +27,8 @@ const cctvRouter = require('./routes/cctv')
 const laporanRouter = require('./routes/laporan')
 const sensorRouter = require('./routes/sensor')
 
+const Sensor = require('./models/sensor')
+
 app.use(express.static(__dirname + '/public'))
 
 // app.use("/",(req,res,next)=>{
@@ -43,13 +45,29 @@ app.use("/cctv", cctvRouter)
 app.use("/sensor", sensorRouter)
 app.get("/test", () => "hello")
 
-io.of('/websocket')
-	.on('connection', function(socket) {
-		socket.on('iot_push', function(msg) {
-			console.log(msg)
-			socket.emit('api_push', 'API PUSH : '+msg)
-		})
-	})
+async function fetchSensor() {
+  return (await Sensor.find()).reduce((acc, sensor) => {
+    acc[sensor._id] = sensor
+    return acc
+  }, {})
+}
+
+io.on('connection', async function(socket) {
+  let sensors = await fetchSensor()
+  socket.emit('api_push', 'Hello from express')
+  socket.on('sensor_1_push', async function(msg) {
+    if (sensors[msg.id].status != msg.door) {
+      socket.emit('api_push', 'update db')
+      await Sensor.findByIdAndUpdate(msg.id, { $set: {
+        status: msg.door.toString()
+      }})
+      sensors = await fetchSensor()
+      io.emit('api_data_push', await Sensor.find())
+    }
+    console.log(sensors[msg.id])
+    socket.emit('api_push', 'Server send back : '+JSON.stringify(sensors[msg.id]))
+  })
+})
 
 http.listen(6500, () => {
     console.log("Server is running!")
