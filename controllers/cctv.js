@@ -1,5 +1,7 @@
+const multer = require('multer')
 let cctv = require('../models/cctv')
 let user = require('../models/user')
+let capture = require('../models/capture')
 
 // router.get("/get",cctvController.getAll)
 // router.get("/get/:id",cctvController.getById)
@@ -16,6 +18,21 @@ function execution(err, doc, res) {
         else res.send({ message: 'Unauthorized user' })
     }
 }
+
+const storageTransfer = multer.diskStorage({
+	destination: function(req, file, cb) {
+                cb(null, 'uploads/camera_captures')
+	},
+	filename: function(req, file, cb) {
+		const splitName = file.originalname.split('.')
+		const extension = '.' + splitName[splitName.length - 1]
+		cb(null, 'capture' + '-' + Date.now() + extension)
+	}
+})
+
+exports.upload = multer({
+	storage: storageTransfer
+})
 
 async function getUsername(id) {
     const { username } = await user
@@ -82,4 +99,17 @@ exports.deleteById = async (req, res) => {
     cctv.findOneAndDelete({ _id: req.params.id, username }, (err, doc) => {
         execution(err, doc, res)
     })
+}
+
+exports.uploadImage = (req, res) => {
+  if (req.file) {
+    const data = {
+      idCctv: req.body.idCctv,
+      capture: req.file.path.split('/')[2],
+      timestamp: req.body.timestamp
+    }
+    capture.create(data, (err, doc) => {
+      execution(err, doc, res)
+    })
+  } else throw 'error'
 }

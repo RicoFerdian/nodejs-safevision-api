@@ -65,4 +65,11 @@ router.get(
 	cctvController.getByPemilik
 )
 
+// UPLOAD CAMERA CAPTURE
+router.post(
+  '/upload',
+  cctvController.upload.single('capture'),
+  cctvController.uploadImage
+)
+
 module.exports = router
