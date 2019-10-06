@@ -5,6 +5,8 @@ const io = require('socket.io')(http)
 const mongoose = require('mongoose')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken')
+const config = require('./config')
 
 mongoose.connect('mongodb://localhost/trafficnet-security', {
 	useCreateIndex: true,
@@ -28,6 +30,7 @@ const laporanRouter = require('./routes/laporan')
 const sensorRouter = require('./routes/sensor')
 
 const Sensor = require('./models/sensor')
+const User = require('./models/user')
 
 app.use(express.static(__dirname + '/public'))
 
@@ -62,10 +65,25 @@ io.on('connection', async function(socket) {
         status: msg.door.toString()
       }})
       sensors = await fetchSensor()
-      io.emit('api_data_push', await Sensor.find())
     }
-    console.log(sensors[msg.id])
-    socket.emit('api_push', 'Server send back : '+JSON.stringify(sensors[msg.id]))
+    //socket.emit('api_push', 'Server send back : '+JSON.stringify(sensors[msg.id]))
+  })
+
+  socket.on('web_client_request', async (data) => {
+    //const { id } = data
+    //const user = await User.findById(id)
+    jwt.verify(data.token, config.secret, async (err, decoded) => {
+      if (!err) {
+        userId = decoded.id
+        userRole = decoded.role
+        if (userRole === 'security') {
+          socket.emit('api_data_push', await Sensor.find())
+        } else {
+          const user = await User.findById(userId)
+          socket.emit('api_data_push', await Sensor.find({ username: user.username }))
+        }
+      }
+    })
   })
 })
 
