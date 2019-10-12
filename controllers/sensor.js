@@ -32,8 +32,16 @@ exports.getAllSensors = (req, res) => {
         .select('data jenis status username long lat')
 }
 
-exports.register = (req, res) => {
-    sensor.create(req.body, (err, doc) => {
+exports.register = async (req, res) => {
+    const username = await getUsername(req.userId)
+    sensor.create({ ...req.body, username }, (err, doc) => {
+        execution(err, doc, res)
+    })
+}
+
+exports.getSensorByUsername = async (req, res) => {
+    const username = await getUsername(req.userId)
+    sensor.find({ username }, (err, doc) => {
         execution(err, doc, res)
     })
 }

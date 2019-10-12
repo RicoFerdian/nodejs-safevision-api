@@ -24,6 +24,7 @@ router.patch(
 	verifyAuthorization,
 	userController.updateByUserName
 )
+router.patch('/updatePassword', verifyAuthorization, userController.updatePassword)
 
 // Only accessible by security
 router.get(

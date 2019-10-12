@@ -5,7 +5,8 @@ const fieldSchema = mongoose.Schema({
         type: String
     },
     status: {
-        type: String
+      type: String,
+      default: "0"
     },
     data: {
         type: Array

@@ -12,6 +12,12 @@ router.get(
 	verifyResident,
 	sensorController.getSensorById
 )
+router.get(
+  '/getByUsername',
+  verifyAuthorization,
+  verifyResident,
+  sensorController.getSensorByUsername
+)
 
 // UPDATE
 router.patch(

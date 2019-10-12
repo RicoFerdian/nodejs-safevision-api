@@ -66,12 +66,9 @@ io.on('connection', async function(socket) {
       }})
       sensors = await fetchSensor()
     }
-    //socket.emit('api_push', 'Server send back : '+JSON.stringify(sensors[msg.id]))
   })
 
-  socket.on('web_client_request', async (data) => {
-    //const { id } = data
-    //const user = await User.findById(id)
+  socket.on('client_request', async (data) => {
     jwt.verify(data.token, config.secret, async (err, decoded) => {
       if (!err) {
         userId = decoded.id

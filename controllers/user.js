@@ -123,6 +123,39 @@ exports.updateByUserName = (req, res) => {
     )
 }
 
+exports.updatePassword = async (req, res) => {
+    const { password } = await user.findById(req.userId)
+    const passwordIsValid = bcrypt.compareSync(
+        req.body.current_password,
+        password
+    )
+
+  if (passwordIsValid) {
+    user.findByIdAndUpdate(
+        req.userId,
+        { password: bcrypt.hashSync(req.body.new_password, 8) },
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                res.send({
+                    error: err
+                })
+            } else {
+                res.send({
+                    message: 'Success',
+                    data: req.userId
+                })
+            }
+        }
+    )
+  } else {
+    res.send({
+      message: 'error',
+      error: 'Invalid password'
+    })
+  }
+}
+
 exports.getAllUsers = (req, res) => {
     user.find({ role: 'resident' }, (err, doc) => {
         if (err) {
