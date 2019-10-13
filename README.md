@@ -26,7 +26,7 @@
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkOWFiM2U3OTNiMjM4MTg0YWU3M2FhOCIsInJvbGUiOiJyZXNpZGVudCIsImlhdCI6MTU3MDQxOTc2NSwiZXhwIjoxNTcwNTA2MTY1fQ.NLmN7i3ImdnMx0HM9aruSKNeEo8OX50PsyoGibV7dAE"
     }
     ```
-- **User Change Password**
+- **Change User Password**
 
   - URL : `/user/changePassword`
   - Request Header :
@@ -69,7 +69,7 @@
 
     ```
     {
-        "id": "SNSR0001", // sensor id
+    	"id": "SNSR0001", // sensor id
     	"jenis": "alarm", // sensor type
     	"long": "3423480923.21",
     	"lat": "2342830420938.22"
@@ -81,7 +81,7 @@
     ```
     {
       "data": [],
-      "_id": "5d9ab8fa93b238184ae73aad",
+      "_id": "SNSR0001",
       "jenis": "alarm",
       "status": "0",
       "username": "user2@gmail.com",
