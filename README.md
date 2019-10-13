@@ -69,6 +69,7 @@
 
     ```
     {
+        "id": "SNSR0001", // sensor id
     	"jenis": "alarm", // sensor type
     	"long": "3423480923.21",
     	"lat": "2342830420938.22"

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 const fieldSchema = mongoose.Schema({
+    _id: {
+      type: String
+    },
     jenis: {
         type: String
     },

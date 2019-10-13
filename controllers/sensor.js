@@ -34,7 +34,8 @@ exports.getAllSensors = (req, res) => {
 
 exports.register = async (req, res) => {
     const username = await getUsername(req.userId)
-    sensor.create({ ...req.body, username }, (err, doc) => {
+    const { id } = req.body
+    sensor.create({ ...req.body, _id: id, username }, (err, doc) => {
         execution(err, doc, res)
     })
 }
