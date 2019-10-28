@@ -5,6 +5,27 @@
 #### Resident Routes (Mobile Client) :
 
 ##### Through HTTP
+- **User Register**
+
+  - URL : `POST /user/resident/register`
+
+  - Request Body :
+
+    ```
+    {
+        "username": "user1",
+    	"email": "user1@gmail.com",
+    	"password": "password"
+    }    
+    ```
+
+  - Expected Response :
+
+    ```
+    {
+      "message": "success",
+    }
+    ```
 - **User Login**
 
   - URL : `POST /user/login/resident`
