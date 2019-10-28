@@ -7,7 +7,7 @@
 ##### Through HTTP
 - **User Login**
 
-  - URL : `/user/login/resident`
+  - URL : `POST /user/login/resident`
 
   - Request Body :
 
@@ -28,7 +28,7 @@
     ```
 - **Change User Password**
 
-  - URL : `/user/changePassword`
+  - URL : `POST /user/changePassword`
   - Request Header :
 
     ```
@@ -56,7 +56,7 @@
 
 - **Add new sensor**
 
-  - URL : `/sensor/create`
+  - URL : `POST /sensor/create`
 
   - Request Header :
 
@@ -92,7 +92,7 @@
     ```
 - **Get sensor by Id**
 
-  - URL : `/sensor/getById/{sensorId}`
+  - URL : `GET /sensor/getById/{sensorId}`
 
   - Request Header :
 
@@ -116,7 +116,7 @@
     ```
 - **Get user sensor**
 
-  - URL : `/sensor/getByUsername`
+  - URL : `GET /sensor/getByUsername`
 
   - Request Header :
 
@@ -162,7 +162,7 @@
     ```
 - **Update sensor data**
 
-  - URL : `/sensor/updateById/{sensorId}`
+  - URL : `PATCH /sensor/updateById/{sensorId}`
   
   - Request Body :
 
@@ -196,7 +196,7 @@
     ```
 - **Delete sensor data**
 
-  - URL : `/sensor/deleteById/{sensorId}`
+  - URL : `DELETE /sensor/deleteById/{sensorId}`
 
   - Request Header :
 
