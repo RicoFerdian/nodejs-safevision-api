@@ -180,13 +180,13 @@ exports.deleteById = (req, res) => {
     })
 }
 
-exports.addResident = async (req, res) => {
-    const { email } = req.body
-    const hashedPassword = bcrypt.hashSync(email, 8)
+exports.registerResident = async (req, res) => {
+    const { username, email, password } = req.body
+    const hashedPassword = bcrypt.hashSync(password, 8)
 
     user.create(
         {
-            username: email,
+            username,
             email,
             password: hashedPassword,
             role: 'resident'

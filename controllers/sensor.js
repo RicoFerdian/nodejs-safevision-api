@@ -40,6 +40,13 @@ exports.register = async (req, res) => {
     })
 }
 
+exports.registerIdOnly = async (req, res) => {
+    const id = req.params.id
+    sensor.create({ _id: id }, (err, doc) => {
+        execution(err, doc, res)
+    })
+}
+
 exports.getSensorByUsername = async (req, res) => {
     const username = await getUsername(req.userId)
     sensor.find({ username }, (err, doc) => {

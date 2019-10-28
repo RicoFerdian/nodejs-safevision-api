@@ -6,9 +6,13 @@ const router = express.Router()
 const userController = require('../controllers/user')
 
 // Accessible by unlogged in user
-router.post('/create', userController.registerAUser)
+router.post('/security/register', userController.registerAUser)
 router.post('/login/security', userController.loginSecurity)
 router.post('/login/resident', userController.loginResident)
+router.post(
+	'/resident/register',
+	userController.registerResident
+)
 
 // Accessible by logged in user
 router.get('/getById/:id', verifyAuthorization, userController.getById)
@@ -41,11 +45,5 @@ router.delete(
 	userController.deleteById
 )
 
-router.post(
-	'/addresident',
-	verifyAuthorization,
-	verifySecurity,
-	userController.addResident
-)
 
 module.exports = router

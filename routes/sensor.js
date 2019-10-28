@@ -50,6 +50,12 @@ router.post(
 	sensorController.register
 )
 
+// CREATE FOR SETTER
+router.get(
+	'/create-for-setter/:id',
+	sensorController.registerIdOnly
+)
+
 // Only accessible by security
 // READ
 router.get(
