@@ -47,6 +47,28 @@
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkOWFiM2U3OTNiMjM4MTg0YWU3M2FhOCIsInJvbGUiOiJyZXNpZGVudCIsImlhdCI6MTU3MDQxOTc2NSwiZXhwIjoxNTcwNTA2MTY1fQ.NLmN7i3ImdnMx0HM9aruSKNeEo8OX50PsyoGibV7dAE"
     }
     ```
+- **Get Profile Logged In User**
+
+  - URL : `GET /user/getLoggedIn`
+  - Request Header :
+
+    ```
+    Content-Type=application/json
+    x-access-token={TOKEN} // User token from login
+    ```
+  - Expected Response :
+
+    ```
+    {
+			"message": "Success",
+			"data": {
+            "_id": "5db79fc3dcb51a15c8db5b05",
+            "username": "user4",
+            "email": "user4@gmail.com",
+            "subscription": "basic"
+			}
+	}
+    ```
 - **Change User Password**
 
   - URL : `POST /user/changePassword`
