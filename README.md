@@ -5,48 +5,51 @@
 #### Resident Routes (Mobile Client) :
 
 ##### Through HTTP
+
 - **User Register**
 
   - URL : `POST /user/resident/register`
 
   - Request Body :
 
-    ```
+    ```json
     {
         "username": "user1",
-    	"email": "user1@gmail.com",
-    	"password": "password"
-    }    
+    	  "email": "user1@gmail.com",
+    	  "password": "password"
+    }
     ```
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "message": "success",
     }
     ```
+
 - **User Login**
 
   - URL : `POST /user/login/resident`
 
   - Request Body :
 
-    ```
+    ```json
     {
-    	"email": "user1@gmail.com",
-    	"password": "user1@gmail.com"
-    }    
+      "email": "user1@gmail.com",
+      "password": "user1@gmail.com"
+    }
     ```
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "message": "Success",
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkOWFiM2U3OTNiMjM4MTg0YWU3M2FhOCIsInJvbGUiOiJyZXNpZGVudCIsImlhdCI6MTU3MDQxOTc2NSwiZXhwIjoxNTcwNTA2MTY1fQ.NLmN7i3ImdnMx0HM9aruSKNeEo8OX50PsyoGibV7dAE"
     }
     ```
+
 - **Get Profile Logged In User**
 
   - URL : `GET /user/getLoggedIn`
@@ -56,9 +59,10 @@
     Content-Type=application/json
     x-access-token={TOKEN} // User token from login
     ```
+
   - Expected Response :
 
-    ```
+    ```json
     {
         "message": "Success",
         "data": {
@@ -69,9 +73,10 @@
         }
     }
     ```
-- **Change User Password**
 
-  - URL : `POST /user/changePassword`
+- **Change User Information**
+
+  - URL : `PATCH /user/updateLoggedIn`
   - Request Header :
 
     ```
@@ -81,16 +86,52 @@
 
   - Request Body :
 
-    ```
+    ```json
     {
-    	"current_password": "user1@gmail.com",
-    	"new_password": "newpassword"
-    }    
+    	"username": "newusername",
+    	"email": "newemail@gmail.com"
+    }
     ```
 
   - Expected Response :
 
+    ```json
+    {
+      "message": "Success",
+      "data": {
+        "subscription": "basic",
+        "cctvs": [],
+        "sensors": [],
+        "_id": "5db6ea7fdcb51a15c8db5b04",
+        "username": "bukansaya",
+        "email": "bukanemail@gmail.com",
+        "role": "resident"
+      }
+    }
     ```
+
+- **Change User Password**
+
+  - URL : `PATCH /user/updatePassword`
+  - Request Header :
+
+    ```
+    Content-Type=application/json
+    x-access-token={TOKEN} // User token from login
+    ```
+
+  - Request Body :
+
+    ```json
+    {
+      "current_password": "user1@gmail.com",
+      "new_password": "newpassword"
+    }
+    ```
+
+  - Expected Response :
+
+    ```json
     {
       "message": "Success",
       "data": "5d736b440213f96eee9920ef"
@@ -103,25 +144,25 @@
 
   - Request Header :
 
-    ```
+    ```json
     Content-Type=application/json
     x-access-token={TOKEN} // User token from login
     ```
 
   - Request Body :
 
-    ```
+    ```json
     {
-    	"id": "SNSR0001", // sensor id
-    	"jenis": "alarm", // sensor type
-    	"long": "3423480923.21",
-    	"lat": "2342830420938.22"
-    }    
+      "id": "SNSR0001", // sensor id
+      "jenis": "alarm", // sensor type
+      "long": "3423480923.21",
+      "lat": "2342830420938.22"
+    }
     ```
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "data": [],
       "_id": "SNSR0001",
@@ -133,6 +174,7 @@
       "__v": 0
     }
     ```
+
 - **Get sensor by Id**
 
   - URL : `GET /sensor/getById/{sensorId}`
@@ -145,7 +187,7 @@
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "data": [],
       "_id": "5d739fea84498c1220ad4455",
@@ -157,6 +199,7 @@
       "__v": 0
     }
     ```
+
 - **Get user sensor**
 
   - URL : `GET /sensor/getByUsername`
@@ -169,7 +212,7 @@
 
   - Expected Response :
 
-    ```
+    ```json
     [
       {
         "data": [],
@@ -203,29 +246,30 @@
       }
     ]
     ```
+
 - **Update sensor data**
 
   - URL : `PATCH /sensor/updateById/{sensorId}`
   
   - Request Body :
 
-    ```
+    ```json
     {
-    	"jenis": "alarm", // sensor type
-    	"long": "3423480923.21",
-    	"lat": "2342830420938.22"
-    }    
+      "jenis": "alarm", // sensor type
+      "long": "3423480923.21",
+      "lat": "2342830420938.22"
+    }
     ```
 
   - Request Header :
 
-    ```
+    ```json
     x-access-token={TOKEN} // User token from login
     ```
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "status": "0",
       "data": [],
@@ -237,19 +281,20 @@
       "__v": 0
     }
     ```
+
 - **Delete sensor data**
 
   - URL : `DELETE /sensor/deleteById/{sensorId}`
 
   - Request Header :
 
-    ```
+    ```json
     x-access-token={TOKEN} // User token from login
     ```
 
   - Expected Response :
 
-    ```
+    ```json
     {
       "status": "0",
       "data": [],
@@ -261,6 +306,7 @@
       "__v": 0
     }
     ```
+
 ##### Through Websocket
 
 - Socket Client JS : `/socket.io/socket.io.js`
@@ -277,7 +323,7 @@
 
         - Data to send :
 
-            ```
+            ```json
             {
                 token: {userToken} // resident/security token retrieved in login
             }
