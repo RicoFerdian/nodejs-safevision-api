@@ -60,14 +60,14 @@
 
     ```
     {
-			"message": "Success",
-			"data": {
+        "message": "Success",
+        "data": {
             "_id": "5db79fc3dcb51a15c8db5b05",
             "username": "user4",
             "email": "user4@gmail.com",
             "subscription": "basic"
-			}
-	}
+        }
+    }
     ```
 - **Change User Password**
 
